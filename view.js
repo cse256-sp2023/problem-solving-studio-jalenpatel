@@ -1,6 +1,23 @@
 // ---- Define your dialogs  and panels here ----
-
-
+let effective_permissions_panel = define_new_effective_permissions('effperm', true)
+let new_user_select_field = define_new_user_select_field('user_selected', 'select user', function(selected_user) {
+    $('#effperm').attr('filepath', '/C/presentation_documents/presentation.ppt')
+    $('#effperm').attr('username', selected_user)
+})
+$('#sidepanel').append(new_user_select_field)
+$('#sidepanel').append(effective_permissions_panel)
+let info_dialog = define_new_dialog('info', 'Info Dialog')
+$('.perm_info').click(function() {
+    console.log('clicked!')
+    info_dialog.dialog('open')
+    console.log($('#effperm').attr('filepath'))
+    console.log($('#effperm').attr('username'))
+    console.log($(this).attr('permission_name'))
+    let file_obj = path_to_file[$('#effperm').attr('filepath')]
+    let user_obj = all_users[$('#effperm').attr('username')]
+    let allowed = allow_user_action(file_obj, user_obj, $(this).attr('permission_name'), true)
+    info_dialog.text(get_explanation_text(allowed))
+})
 
 // ---- Display file structure ----
 
